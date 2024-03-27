@@ -34,16 +34,16 @@ const settingRoutes = require("./routes/setting/setting.routes");
 const app = express();
 
 // holds all the allowed origins for cors access
-// let allowedOrigins = [
-//   "http://localhost:3000",
-//   "http://localhost:5000",
-//   "https://pososf.onrender.com",
-// "https://pososf.netlify.app",
-//   "http://localhost:3001",
-//   "https://inventory-backend-8r4e.onrender.com",
-//   "https://pos-os-frontend-6pd4ybtq4-hritik-4642d12e.vercel.app"
+let allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:5000",
+  "https://pososf.onrender.com",
+"https://pososf.netlify.app",
+  "http://localhost:3001",
+  "https://inventory-backend-8r4e.onrender.com",
+  "https://pos-os-frontend-6pd4ybtq4-hritik-4642d12e.vercel.app"
 
-// ];
+];
 
 
 
@@ -63,7 +63,21 @@ app.use(compression());
 // morgan: log requests to console in dev environment
 app.use(morgan("dev"));
 // allows cors access from allowedOrigins array
-app.use(cors())
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        let msg =
+          "The CORS policy for this site does not " +
+          "allow access from the specified Origin.";
+        return callback(new Error(msg), false);
+      }
+      return callback(null, true);
+    },
+  })
+);
 
 // parse requests of content-type - application/json
 app.use(express.json({ extended: true }));
