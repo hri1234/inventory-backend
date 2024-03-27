@@ -49,15 +49,15 @@ let allowedOrigins = [
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 20, // Limit each IP to 20 requests per `window` (here, per 15 minutes)
-  standardHeaders: false, // Disable rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  standardHeaders: true, // Disable rate limit info in the `RateLimit-*` headers
+  legacyHeaders: true, // Disable the `X-RateLimit-*` headers
 });
 
 /* Middleware */
 // for compressing the response body
 app.use(compression());
 // helmet: secure express app by setting various HTTP headers. And serve cross origin resources.
-app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
+// app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 // morgan: log requests to console in dev environment
 app.use(morgan("dev"));
 // allows cors access from allowedOrigins array
