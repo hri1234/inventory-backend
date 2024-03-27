@@ -34,14 +34,14 @@ const settingRoutes = require("./routes/setting/setting.routes");
 const app = express();
 
 // holds all the allowed origins for cors access
-// let allowedOrigins = [
-//   "http://localhost:3000",
-//   "http://localhost:5000",
-//   "https://pososf.onrender.com",
-//"https://pososf.netlify.app",
-//   "http://localhost:3001"
+let allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:5000",
+  "https://pososf.onrender.com",
+"https://pososf.netlify.app",
+  "https://inventory-backend-8r4e.onrender.com"
 
-// ];
+];
 
 
 
@@ -57,11 +57,25 @@ const limiter = rateLimit({
 // for compressing the response body
 app.use(compression());
 // helmet: secure express app by setting various HTTP headers. And serve cross origin resources.
-// app.use(helmet.crossOriginResourcePolicy({ policy: "unsafe-cross-origin" }));
+app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 // morgan: log requests to console in dev environment
 app.use(morgan("dev"));
-// allows cors access from all origins
-app.use(cors());
+// allows cors access from allowedOrigins array
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        let msg =
+          "The CORS policy for this site does not " +
+          "allow access from the specified Origin.";
+        return callback(new Error(msg), false);
+      }
+      return callback(null, true);
+    },
+  })
+);
 
 // parse requests of content-type - application/json
 app.use(express.json({ extended: true }));
