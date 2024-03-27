@@ -40,7 +40,8 @@ let allowedOrigins = [
   "https://pososf.onrender.com",
 "https://pososf.netlify.app",
   "http://localhost:3001",
-  "https://inventory-backend-8r4e.onrender.com"
+  "https://inventory-backend-8r4e.onrender.com",
+  "https://pos-os-frontend-6pd4ybtq4-hritik-4642d12e.vercel.app"
 
 ];
 
