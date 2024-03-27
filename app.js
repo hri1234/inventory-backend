@@ -39,6 +39,7 @@ let allowedOrigins = [
   "http://localhost:5000",
   "https://pososf.onrender.com",
 "https://pososf.netlify.app",
+  "pos-os-frontend.vercel.app"
  
 
 ];
